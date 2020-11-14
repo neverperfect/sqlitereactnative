@@ -18,11 +18,35 @@ export default class Login extends Component {
         }
     }
 
+    componentDidMount() {
+        db = SQLite.openDatabase({ name: 'UserDatabase.db' },
+            this.openSuccess, this.openError);
+    }
+
     login = () => {
+        const { username, password } = this.state;
+        if (username === '' || password === '') {
+            alert('Please enter your username and password!');
+        }
         if (this.state.username === 'admin' && this.state.password === 'root') {
             this.props.navigation.navigate('HomeScreen')
         } else {
-            alert('Username or Password wrong')
+            db.transaction((tx) => {
+                const sql = `SELECT * FROM table_user WHERE user_username='${username}'`;
+                tx.executeSql(sql, [], (tx, results) => {
+                    const len = results.rows.length;
+                    if (!len) {
+                        alert('This account does not exist!');
+                    } else {
+                        const row = results.rows.item(0);
+                        if (password === row.password) {
+                            this.props.navigation.navigate('Main', { username });
+                            return;
+                        }
+                        alert('Authentication failed!');
+                    }
+                });
+            });
         }
     }
 
