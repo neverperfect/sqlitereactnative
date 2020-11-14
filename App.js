@@ -11,6 +11,7 @@ import ViewUser from './pages/ViewUser';
 import ViewAllUser from './pages/ViewAllUser';
 import DeleteUser from './pages/DeleteUser';
 import Login from './pages/Login';
+import Main from './pages/Main';
 
 const Stack = createStackNavigator();
 
@@ -117,6 +118,20 @@ const App = () => {
           }}
         />
       </Stack.Navigator>
+      <Stack.Screen
+          name="Main"
+          component={Main}
+          options={{
+            title: 'Profile User', //Set Header Title
+            headerStyle: {
+              backgroundColor: '#f4511e', //Set Header color
+            },
+            headerTintColor: '#fff', //Set Header text color
+            headerTitleStyle: {
+              fontWeight: 'bold', //Set Header text style
+            },
+          }}
+        />
     </NavigationContainer>
   );
 };
